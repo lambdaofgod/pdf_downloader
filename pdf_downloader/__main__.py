@@ -2,6 +2,7 @@ import os
 import bs4                                                                                                                                    
 import requests                
 import fire
+import tqdm
 
 
 def get_site_url(url):
@@ -30,9 +31,11 @@ def download_from_link(link):
     f.write(file_content)
 
 
-def download_pdfs_from_site(url):
-
-    url = 'http://www.ii.uni.wroc.pl/~lipinski/lectureAE2019.html'
+def download_pdfs_from_site(url: str):
+    """
+        Download pdfs from links on site.
+        Uses a simple heuristic to download files that are local on server.
+    """
     site_url = get_site_url(url)
     html = requests.get(url).text
 
@@ -41,7 +44,7 @@ def download_pdfs_from_site(url):
     pdf_links = [link for link in all_links if link.endswith('pdf')]
     pdf_links = maybe_add_full_links(pdf_links, site_url)
 
-    for link in pdf_links:
+    for link in tqdm.tqdm(pdf_links):
         download_from_link(link)
 
 
