@@ -1,0 +1,3 @@
+fire
+lxml
+bs4
